@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Copiloto Accesible UPV</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<a class="skip" href="#map">Saltar al mapa</a>
+<header>
+  <h1>Copiloto Accesible UPV</h1>
+  <div class="search">
+    <label for="q" class="sr">Buscar edificio por nombre o código (atajo: barra /)</label>
+    <input id="q" type="search" placeholder="Busca un edificio o puerta (ej. 1G, Puerta A)" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="ls" aria-autocomplete="list">
+    <ul id="ls" role="listbox" aria-label="Edificios encontrados" hidden></ul>
+  </div>
+  <button class="btn acc" id="bAlerts" aria-haspopup="dialog">🔔 Alertas <span id="cnt" class="badge">0</span><span class="sr"> en tus favoritos</span></button>
+  <button class="btn" id="bA11y" aria-haspopup="dialog" aria-label="Ajustes de accesibilidad y atajos">♿ Ajustes</button>
+<div class="lang" role="group" aria-label="Idioma / Language"><button class="btn" data-lang="es" lang="es" aria-pressed="true">ES</button><button class="btn" data-lang="en" lang="en" aria-pressed="false">EN</button></div>
+</header>
+<div id="pinbar" hidden>
+  <span>Mueve el pin (arrastra, toca el mapa o usa las flechas)</span>
+  <button class="btn pri" id="pinOk">Confirmar ubicación</button>
+  <button class="btn" id="pinNo">Cancelar</button>
+</div>
+<main><div id="map" role="application" aria-label="Mapa del Campus de Vera con edificios e incidencias"></div></main>
+<div id="dock">
+  <section id="sheet" aria-labelledby="sh" hidden></section>
+  <button class="btn" id="fab">⚠️ Avisar de una incidencia</button>
+</div>
+<div id="live" class="sr" aria-live="polite" role="status"></div>
+
+<dialog id="dlg" aria-labelledby="dt">
+  <h2 id="dt">Avisar de una incidencia</h2>
+  <form id="f">
+    <label for="type">¿Qué ocurre?</label><select id="type"></select>
+    <p id="locInfo" role="status">Ubicación: sin elegir</p>
+    <div class="row">
+      <button class="btn" type="button" id="gps">📍 Usar mi GPS</button>
+      <button class="btn" type="button" id="pin">📌 Colocar pin en el mapa</button>
+    </div>
+    <label for="desc">Descripción breve</label><textarea id="desc" required maxlength="200" rows="2"></textarea>
+    <label for="alt">Alternativa accesible sugerida (opcional)</label><textarea id="alt" maxlength="200" rows="2" placeholder="Ej. Usa la entrada lateral, sin escalones"></textarea>
+    <div class="row"><button class="btn pri" type="submit">Publicar aviso</button><button class="btn" type="button" data-act="c">Cancelar</button></div>
+  </form>
+</dialog>
+
+<dialog id="alr" aria-labelledby="at">
+  <h2 id="at">Alertas de tus edificios favoritos</h2>
+  <h3>Tus favoritos</h3><ul class="inc" id="favs"></ul>
+  <label class="chk"><input type="checkbox" id="all"> Ver también las incidencias de todo el campus</label>
+  <ul class="inc" id="alist"></ul>
+  <div class="row"><button class="btn" id="sim">Demo: simular aviso de otro usuario</button><button class="btn pri" data-act="c">Cerrar</button></div>
+</dialog>
+
+<dialog id="adlg" aria-labelledby="gt">
+  <h2 id="gt">Ajustes de accesibilidad</h2>
+  <div class="row">
+    <button class="btn" id="hc" aria-pressed="false">Alto contraste</button>
+    <button class="btn" id="fsDn" aria-label="Texto más pequeño">A−</button>
+    <button class="btn" id="fsUp" aria-label="Texto más grande">A+</button>
+  </div>
+  <h3>Atajos de teclado</h3>
+  <p><kbd>/</kbd> buscar · <kbd>R</kbd> avisar de incidencia · <kbd>A</kbd> alertas · <kbd>F</kbd> favorito del edificio abierto · <kbd>H</kbd> estos ajustes · <kbd>Esc</kbd> cerrar</p>
+  <div class="row"><button class="btn pri" data-act="c">Cerrar</button></div>
+</dialog>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="js/data.js"></script>
+<script src="js/store.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/map.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
